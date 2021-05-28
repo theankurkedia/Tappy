@@ -7,7 +7,7 @@ const COLORS = {
 
 function App() {
   const [values, setValues] = React.useState({ red: 50, blue: 50 });
-  const [result, setResult] = React.useState('Red');
+  const [result, setResult] = React.useState();
 
   const handlePress = (color) => {
     if (color === 'Red') {

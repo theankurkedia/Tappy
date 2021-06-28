@@ -7,9 +7,9 @@ const COLORS = {
 
 function App() {
   const [values, setValues] = React.useState({ red: 50, blue: 50 });
-  const [result, setResult] = React.useState();
+  const [result, setResult] = React.useState<string | null>();
 
-  const handlePress = (color) => {
+  const handlePress = (color: 'Red' | 'Blue') => {
     if (color === 'Red') {
       if (values.blue >= 2) {
         setValues({ red: values.red + 2, blue: values.blue - 2 });
@@ -72,6 +72,9 @@ function App() {
             style={{
               backgroundColor: COLORS.Red,
               height: values.red + '%',
+              transitionProperty: 'height',
+              transitionDuration: '300ms',
+              transitionTimingFunction: 'ease-out',
             }}
             onClick={() => handlePress('Red')}
           />
@@ -79,6 +82,9 @@ function App() {
             style={{
               backgroundColor: COLORS.Blue,
               height: values.blue + '%',
+              transitionProperty: 'height',
+              transitionDuration: '300ms',
+              transitionTimingFunction: 'ease-out',
             }}
             onClick={() => handlePress('Blue')}
           />

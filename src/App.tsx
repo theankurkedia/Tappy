@@ -1,96 +1,28 @@
 import React from 'react';
+import Game from './components/Game';
+import Login from './components/Login';
+import socketClient, { Socket } from 'socket.io-client';
 
-const COLORS = {
-  Red: '#e11d48',
-  Blue: '#2563eb',
-};
+// TODO: pick it up from env
+const ENDPOINT = 'http://127.0.0.1:8080';
+
+const socket: Socket = socketClient(ENDPOINT, {
+  transports: ['websocket', 'polling', 'flashsocket'],
+});
 
 function App() {
-  const [values, setValues] = React.useState({ red: 50, blue: 50 });
-  const [result, setResult] = React.useState<string | null>();
-
-  const handlePress = (color: 'Red' | 'Blue') => {
-    if (color === 'Red') {
-      if (values.blue >= 2) {
-        setValues({ red: values.red + 2, blue: values.blue - 2 });
-      } else {
-        setValues({ red: 50, blue: 50 });
-        setResult('Red');
-      }
-    } else {
-      if (values.red >= 2) {
-        setValues({ red: values.red - 2, blue: values.blue + 2 });
-      } else {
-        setValues({ red: 50, blue: 50 });
-        setResult('Blue');
-      }
-    }
-  };
+  const [loginData, setLoggedIn] = React.useState<{
+    user?: string;
+    room?: string;
+  }>({});
   return (
-    <div style={{ position: 'absolute', height: '100vh', width: '100vw' }}>
-      {result ? (
-        <div
-          style={{
-            backgroundColor: COLORS[result === 'Red' ? 'Red' : 'Blue'],
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '100%',
-            width: '100%',
-          }}
-        >
-          <h6
-            style={{
-              color: 'white',
-              fontSize: '1.5rem',
-              margin: 10,
-              pointerEvents: 'none',
-            }}
-          >{`${result} wins`}</h6>
-          <button
-            onClick={() => setResult(null)}
-            className='button'
-            style={{
-              fontSize: '1rem',
-              padding: 10,
-              backgroundColor: COLORS[result === 'Red' ? 'Blue' : 'Red'],
-              width: '100',
-              color: 'white',
-              borderWidth: 0,
-              fontWeight: 700,
-              borderRadius: 10,
-              height: 40,
-            }}
-          >
-            Play again?
-          </button>
-        </div>
+    <>
+      {!(loginData.room && loginData.user) ? (
+        <Login setLoggedIn={setLoggedIn} socket={socket} />
       ) : (
-        <>
-          <div
-            style={{
-              backgroundColor: COLORS.Red,
-              height: values.red + '%',
-              transitionProperty: 'height',
-              transitionDuration: '300ms',
-              transitionTimingFunction: 'ease-out',
-            }}
-            onClick={() => handlePress('Red')}
-          />
-          <div
-            style={{
-              backgroundColor: COLORS.Blue,
-              height: values.blue + '%',
-              transitionProperty: 'height',
-              transitionDuration: '300ms',
-              transitionTimingFunction: 'ease-out',
-            }}
-            onClick={() => handlePress('Blue')}
-          />
-        </>
+        <Game socket={socket} room={loginData.room} user={loginData.user} />
       )}
-    </div>
+    </>
   );
 }
 

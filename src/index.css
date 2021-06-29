@@ -19,3 +19,13 @@ code {
   align-items: center;
   justify-content: center;
 }
+
+.game {
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

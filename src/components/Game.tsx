@@ -1,8 +1,8 @@
 import React from 'react';
 import { Socket } from 'socket.io-client';
 const COLORS = {
-  Opponent: '#e11d48',
-  Local: '#2563eb',
+  opponent: '#e11d48',
+  local: '#2563eb',
 };
 
 function Game({
@@ -17,30 +17,32 @@ function Game({
   const [score, setScore] = React.useState(50);
   const [result, setResult] = React.useState<string | null>();
 
-  const reset = () => {
-    setScore(50);
-  };
-
   const tickOpponent = React.useCallback(() => {
     if (score >= 2) {
       setScore((prevScore) => prevScore - 2);
-    } else {
-      reset();
-      setResult('Opponent');
     }
   }, []);
 
+  const reset = () => {
+    setScore(50);
+    setResult(null);
+  };
+
   function tickLocal() {
-    socket.emit('updateScore', {}, (error: any) => {
-      if (error) {
-        console.log(error);
-      }
-    });
     if (score < 98) {
+      socket.emit('updateScore', {}, (error: any) => {
+        if (error) {
+          console.log(error);
+        }
+      });
       setScore((prevScore) => prevScore + 2);
     } else {
-      reset();
-      setResult('Local');
+      socket.emit('gameOver', {}, (error: any) => {
+        if (error) {
+          console.log(error);
+        }
+      });
+      setResult('local');
     }
   }
 
@@ -50,16 +52,27 @@ function Game({
         tickOpponent();
       }
     });
+
+    socket.on('announceWinner', ({ user: userName }) => {
+      if (user !== userName) {
+        setResult('opponent');
+      }
+    });
+
+    socket.on('resetGame', ({ user: userName }) => {
+      if (user !== userName) {
+        reset();
+      }
+    });
   }, [socket, user, tickOpponent]);
 
-  console.log('*** 🔥 score', score);
   return (
-    <div style={{ position: 'absolute', height: '100vh', width: '100vw' }}>
+    <div className='game'>
       {result ? (
         <div
           style={{
             backgroundColor:
-              COLORS[result === 'Opponent' ? 'Opponent' : 'Local'],
+              COLORS[result === 'opponent' ? 'opponent' : 'local'],
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
@@ -75,21 +88,29 @@ function Game({
               margin: 10,
               pointerEvents: 'none',
             }}
-          >{`${result} wins`}</h6>
+          >{`You ${result === 'local' ? 'won' : 'lost'}!`}</h6>
           <button
-            onClick={() => setResult(null)}
+            onClick={() => {
+              socket.emit('reset', {}, (error: any) => {
+                if (error) {
+                  console.log(error);
+                }
+              });
+              reset();
+            }}
             className='button'
             style={{
               fontSize: '1rem',
               padding: 10,
               backgroundColor:
-                COLORS[result === 'Opponent' ? 'Local' : 'Opponent'],
+                COLORS[result === 'opponent' ? 'local' : 'opponent'],
               width: '100',
               color: 'white',
               borderWidth: 0,
               fontWeight: 700,
               borderRadius: 10,
               height: 40,
+              cursor: 'pointer',
             }}
           >
             Play again?
@@ -99,7 +120,7 @@ function Game({
         <>
           <div
             style={{
-              backgroundColor: COLORS.Opponent,
+              backgroundColor: COLORS.opponent,
               height: 100 - score + '%',
               transitionProperty: 'height',
               transitionDuration: '300ms',
@@ -108,7 +129,7 @@ function Game({
           />
           <div
             style={{
-              backgroundColor: COLORS.Local,
+              backgroundColor: COLORS.local,
               height: score + '%',
               transitionProperty: 'height',
               transitionDuration: '200ms',

@@ -11,16 +11,17 @@ const socket: Socket = socketClient(ENDPOINT, {
 });
 
 function App() {
-  const [loginData, setLoggedIn] = React.useState<{
+  const [loginData, setLoginData] = React.useState<{
+    users?: Array<any>;
     user?: string;
     room?: string;
   }>({});
   return (
     <>
-      {!(loginData.room && loginData.user) ? (
-        <Login setLoggedIn={setLoggedIn} socket={socket} />
+      {!(loginData.room && loginData.users && loginData.users.length > 1) ? (
+        <Login setLoginData={setLoginData} socket={socket} />
       ) : (
-        <Game socket={socket} room={loginData.room} user={loginData.user} />
+        <Game socket={socket} />
       )}
     </>
   );

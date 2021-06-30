@@ -1,27 +1,18 @@
 import React from 'react';
 import { Socket } from 'socket.io-client';
+
 const COLORS = {
   opponent: '#e11d48',
   local: '#2563eb',
 };
 
-function Game({
-  socket,
-  room,
-  user,
-}: {
-  socket: Socket;
-  room: string;
-  user: string;
-}) {
+function Game({ socket }: { socket: Socket }) {
   const [score, setScore] = React.useState(50);
   const [result, setResult] = React.useState<string | null>();
 
   const tickOpponent = React.useCallback(() => {
-    if (score >= 2) {
-      setScore((prevScore) => prevScore - 2);
-    }
-  }, [score]);
+    setScore((prevScore) => prevScore - 2);
+  }, []);
 
   const reset = () => {
     setScore(50);
@@ -47,16 +38,20 @@ function Game({
   }
 
   React.useEffect(() => {
-    socket.on('scoreUpdated', () => {
-      tickOpponent();
-    });
-
-    socket.on('announceWinner', () => {
-      setResult('opponent');
-    });
-
-    socket.on('resetGame', () => {
-      reset();
+    socket.on('message', ({ type }: { type: string }) => {
+      switch (type) {
+        case 'scoreUpdated':
+          tickOpponent();
+          break;
+        case 'announceWinner':
+          setResult('opponent');
+          break;
+        case 'resetGame':
+          reset();
+          break;
+        default:
+          break;
+      }
     });
   }, [socket, tickOpponent]);
 

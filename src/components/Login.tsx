@@ -29,7 +29,7 @@ export default function Login({
         setLoginData(data);
       }
     );
-  }, []);
+  }, [socket, setLoginData]);
 
   const handleClick = () => {
     if (user && room) {

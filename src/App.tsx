@@ -3,8 +3,7 @@ import Game from './components/Game';
 import Login from './components/Login';
 import socketClient, { Socket } from 'socket.io-client';
 
-// TODO: pick it up from env
-const ENDPOINT = 'http://127.0.0.1:8080';
+const ENDPOINT = process.env.REACT_APP_ENDPOINT || '';
 
 const socket: Socket = socketClient(ENDPOINT, {
   transports: ['websocket', 'polling', 'flashsocket'],

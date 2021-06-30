@@ -29,3 +29,35 @@ code {
   -ms-user-select: none;
   user-select: none;
 }
+
+.color-block {
+  transition-property: height;
+  transition-duration: 200ms;
+  transition-timing-function: ease-out;
+}
+
+.result-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.result-text {
+  color: white;
+  font-size: 1.5rem;
+  margin: 10px;
+}
+
+.play-again {
+  font-size: 1rem;
+  padding: 10px;
+  color: white;
+  border-width: 0;
+  font-weight: 700;
+  border-radius: 10px;
+  height: 40px;
+  cursor: pointer;
+}

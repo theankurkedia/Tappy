@@ -2,6 +2,7 @@ import React from 'react';
 import Game from './components/Game';
 import Login from './components/Login';
 import socketClient, { Socket } from 'socket.io-client';
+import { GameDataType } from './types';
 
 const ENDPOINT = process.env.REACT_APP_ENDPOINT || '';
 
@@ -10,18 +11,11 @@ const socket: Socket = socketClient(ENDPOINT, {
 });
 
 function App() {
-  const [loginData, setLoginData] = React.useState<{
-    users?: Array<any>;
-    user?: string;
-    room?: string;
-  }>({});
+  const [gameData, setGameData] = React.useState<GameDataType>({});
   return (
     <>
-      {!(loginData.room && loginData.users && loginData.users.length > 1) ? (
-        <Login setLoginData={setLoginData} socket={socket} />
-      ) : (
-        <Game socket={socket} />
-      )}
+      <Game socket={socket} gameData={gameData} />
+      <Login socket={socket} setGameData={setGameData} gameData={gameData} />
     </>
   );
 }

@@ -78,6 +78,11 @@ code {
   transform: translate(0.25rem, -65%) scale(0.8);
 }
 
+.action-wrapper {
+  display: flex;
+  align-items: center;
+}
+
 .login-button {
   width: 72px;
   margin: 10px 24px;
@@ -90,6 +95,10 @@ code {
   height: 40px;
 }
 
+.login-button:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
 .game {
   position: absolute;
   height: 100vh;

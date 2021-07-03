@@ -1,13 +1,16 @@
 import React from 'react';
 import { Socket } from 'socket.io-client';
 import { getUser, saveUser } from '../utils';
+import { LoginDataType } from '../types';
 
 export default function Login({
   socket,
   setLoginData,
+  loginData,
 }: {
   socket: Socket;
   setLoginData: Function;
+  loginData: LoginDataType;
 }) {
   const inputRef = React.useRef<any>();
   const [loggedIn, setLoggedIn] = React.useState(false);
@@ -45,7 +48,11 @@ export default function Login({
   };
 
   return (
-    <Overlay visible={!loggedIn}>
+    <Overlay
+      visible={
+        !(loginData.room && loginData.users && loginData.users.length > 1)
+      }
+    >
       <div className='login_wrapper'>
         <div className='input_field_wrapper'>
           <label className='input'>
@@ -68,15 +75,25 @@ export default function Login({
               type='text'
               value={room}
               onChange={(e: any) => setRoom(e.target.value)}
-              readOnly
+              disabled={loggedIn}
             />
             <span className='input_label'>Room</span>
           </label>
         </div>
-        <button onClick={handleClick} className='login-button'>
-          Login
-        </button>
-        {loggedIn ? <div>"Waiting for the other user to join..."</div> : null}
+        <div className='action-wrapper'>
+          <button
+            onClick={handleClick}
+            className='login-button'
+            disabled={loggedIn}
+          >
+            Login
+          </button>
+          {loggedIn ? (
+            <div style={{ maxWidth: 110 }}>
+              Waiting for the other user to join...
+            </div>
+          ) : null}
+        </div>
       </div>
     </Overlay>
   );

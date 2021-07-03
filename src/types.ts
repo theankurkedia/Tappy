@@ -1,5 +1,6 @@
-export type LoginDataType = {
+export type GameDataType = {
   users?: Array<any>;
-  user?: string;
+  localUser?: string;
+  opponentUser?: string;
   room?: string;
 };

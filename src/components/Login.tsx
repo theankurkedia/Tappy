@@ -1,16 +1,16 @@
 import React from 'react';
 import { Socket } from 'socket.io-client';
 import { getUser, saveUser } from '../utils';
-import { LoginDataType } from '../types';
+import { GameDataType } from '../types';
 
 export default function Login({
   socket,
-  setLoginData,
-  loginData,
+  setGameData,
+  gameData,
 }: {
   socket: Socket;
-  setLoginData: Function;
-  loginData: LoginDataType;
+  setGameData: Function;
+  gameData: GameDataType;
 }) {
   const inputRef = React.useRef<any>();
   const [loggedIn, setLoggedIn] = React.useState(false);
@@ -28,11 +28,16 @@ export default function Login({
   React.useEffect(() => {
     socket.on(
       'startGame',
-      (data: { user: string; users: Array<any>; room: string }) => {
-        setLoginData(data);
+      (data: {
+        localUser: string;
+        opponentUser: string;
+        users: Array<any>;
+        room: string;
+      }) => {
+        setGameData(data);
       }
     );
-  }, [socket, setLoginData]);
+  }, [socket, setGameData]);
 
   const handleClick = () => {
     if (user && room) {
@@ -49,9 +54,7 @@ export default function Login({
 
   return (
     <Overlay
-      visible={
-        !(loginData.room && loginData.users && loginData.users.length > 1)
-      }
+      visible={!(gameData.room && gameData.users && gameData.users.length > 1)}
     >
       <div className='login_wrapper'>
         <div className='input_field_wrapper'>

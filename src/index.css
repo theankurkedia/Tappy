@@ -136,7 +136,17 @@ code {
   color: white;
   border-width: 0;
   font-weight: 700;
-  border-radius: 10px;
+  border-radius: 6px;
   height: 40px;
   cursor: pointer;
+}
+
+.name-tag {
+  position: absolute;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 8px;
+  border-radius: 6px;
+  pointer-events: none;
 }

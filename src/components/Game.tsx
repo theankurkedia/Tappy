@@ -1,12 +1,19 @@
 import React from 'react';
 import { Socket } from 'socket.io-client';
+import { GameDataType } from '../types';
 
 const COLORS = {
   opponent: '#e11d48',
   local: '#2563eb',
 };
 
-function Game({ socket }: { socket: Socket }) {
+function Game({
+  socket,
+  gameData,
+}: {
+  socket: Socket;
+  gameData: GameDataType;
+}) {
   const [score, setScore] = React.useState(50);
   const [result, setResult] = React.useState<string | null>();
 
@@ -94,7 +101,16 @@ function Game({ socket }: { socket: Socket }) {
               backgroundColor: COLORS.opponent,
               height: 100 - score + '%',
             }}
-          />
+          >
+            <div
+              style={{
+                top: 10,
+              }}
+              className='name-tag'
+            >
+              {gameData.opponentUser}
+            </div>
+          </div>
           <div
             className='color-block'
             style={{
@@ -102,7 +118,16 @@ function Game({ socket }: { socket: Socket }) {
               height: score + '%',
             }}
             onClick={tickLocal}
-          />
+          >
+            <div
+              style={{
+                bottom: 10,
+              }}
+              className='name-tag'
+            >
+              {gameData.localUser}
+            </div>
+          </div>
         </>
       )}
     </div>

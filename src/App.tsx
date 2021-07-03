@@ -17,11 +17,10 @@ function App() {
   }>({});
   return (
     <>
+      <Game socket={socket} />
       {!(loginData.room && loginData.users && loginData.users.length > 1) ? (
         <Login setLoginData={setLoginData} socket={socket} />
-      ) : (
-        <Game socket={socket} />
-      )}
+      ) : null}
     </>
   );
 }

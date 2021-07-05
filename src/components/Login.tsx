@@ -26,18 +26,20 @@ export default function Login({
   }, []);
 
   React.useEffect(() => {
-    socket.on(
-      'startGame',
-      (data: {
-        localUser: string;
-        opponentUser: string;
-        users: Array<any>;
-        room: string;
-      }) => {
-        setGameData(data);
-      }
-    );
-  }, [socket, setGameData]);
+    socket.on('startGame', (data: { users: Array<any>; room: string }) => {
+      let otherUser: { name: string; room: string } = data.users.filter(
+        (usr) => usr.name !== user
+      )[0];
+      setGameData({
+        ...data,
+        localUser: user,
+        opponentUser: otherUser?.name || 'Opponent',
+      });
+    });
+    return () => {
+      socket.off('startGame');
+    };
+  }, [user, socket, setGameData]);
 
   const handleClick = () => {
     if (user && room) {

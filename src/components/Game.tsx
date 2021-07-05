@@ -61,7 +61,6 @@ function Game({
       }
     });
   }, [socket, tickOpponent]);
-
   return (
     <div className='game'>
       {result ? (
@@ -102,14 +101,16 @@ function Game({
               height: 100 - score + '%',
             }}
           >
-            <div
-              style={{
-                top: 10,
-              }}
-              className='name-tag'
-            >
-              {gameData.opponentUser}
-            </div>
+            {gameData.opponentUser ? (
+              <div
+                style={{
+                  top: 10,
+                }}
+                className='name-tag'
+              >
+                {gameData.opponentUser}
+              </div>
+            ) : null}
           </div>
           <div
             className='color-block'
@@ -119,14 +120,16 @@ function Game({
             }}
             onClick={tickLocal}
           >
-            <div
-              style={{
-                bottom: 10,
-              }}
-              className='name-tag'
-            >
-              {gameData.localUser}
-            </div>
+            {gameData.localUser ? (
+              <div
+                style={{
+                  bottom: 10,
+                }}
+                className='name-tag'
+              >
+                {gameData.localUser}
+              </div>
+            ) : null}
           </div>
         </>
       )}

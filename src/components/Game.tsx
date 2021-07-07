@@ -83,7 +83,7 @@ function Game({
               });
               reset();
             }}
-            className='play-again'
+            className='play-again button-ripple'
             style={{
               backgroundColor:
                 COLORS[result === 'opponent' ? 'local' : 'opponent'],

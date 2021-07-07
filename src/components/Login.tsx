@@ -78,6 +78,7 @@ export default function Login({
             <input
               className='input_field'
               type='text'
+              placeholder=' '
               value={room}
               onChange={(e: any) => setRoom(e.target.value)}
               disabled={loggedIn}
@@ -86,18 +87,26 @@ export default function Login({
           </label>
         </div>
         <div className='action-wrapper'>
-          <button
-            onClick={handleClick}
-            className='login-button'
-            disabled={loggedIn}
-          >
-            Login
-          </button>
           {loggedIn ? (
-            <div style={{ maxWidth: 110 }}>
+            <div className='waiting-text'>
               Waiting for the other user to join...
             </div>
           ) : null}
+          <button
+            onClick={handleClick}
+            className='login-button button-ripple'
+            disabled={loggedIn}
+          >
+            {loggedIn ? (
+              <div className='spinner'>
+                <div className='bounce1'></div>
+                <div className='bounce2'></div>
+                <div className='bounce3'></div>
+              </div>
+            ) : (
+              'Login'
+            )}
+          </button>
         </div>
       </div>
     </Overlay>

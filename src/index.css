@@ -30,9 +30,19 @@ code {
 }
 
 .login_wrapper {
-  padding: 36px;
-  background: lightgray;
-  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 10px;
+  min-width: 235px;
+  min-height: 235px;
+  color: white;
 }
 .input {
   position: relative;
@@ -41,28 +51,29 @@ code {
   position: absolute;
   left: 0;
   top: 0;
-  padding: 6px;
-  margin: 9px 4px;
-  background: lightgray;
+  padding: 6px 0px;
+  margin: 9px 0px;
   white-space: nowrap;
   transform: translate(0, 0);
   transform-origin: 0 0;
   transition: transform 120ms ease-in;
   font-weight: bold;
   line-height: 1.2;
+  color: #e5e3e3;
 }
 .input_field_wrapper {
-  margin: 24px;
+  margin: 16px;
 }
 .input_field {
   box-sizing: border-box;
   display: block;
-  border: 3px solid;
+  border: 0px solid;
+  outline: none;
+  border-bottom: 1px solid white;
+  color: white;
   padding: 12px 8px;
   font-size: 1.1rem;
-  /* color: var(--brand-color); */
   background: transparent;
-  border-radius: 6px;
 }
 
 .input_field:not(:-moz-placeholder-shown) + .input_label {
@@ -81,24 +92,48 @@ code {
 .action-wrapper {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
 }
 
 .login-button {
   width: 72px;
-  margin: 10px 24px;
+  margin: 16px;
   background-color: var(--brand-color);
   color: white;
-  border-width: 0;
+  border: 0;
   font-size: 1.1rem;
   font-weight: 700;
   border-radius: 6px;
   height: 40px;
+  align-self: flex-end;
 }
 
 .login-button:disabled {
   opacity: 0.8;
   cursor: not-allowed;
 }
+
+.button-ripple {
+  position: relative;
+  overflow: hidden;
+  outline: none;
+  cursor: pointer;
+  background-position: center;
+  transition: background 0.8s;
+}
+.button-ripple:hover {
+  background: #2563ebad radial-gradient(circle, transparent 1%, #2563ebad 1%)
+    center/15000%;
+}
+.button-ripple:active {
+  background-color: #7497b4;
+  background-size: 100%;
+  transition: filter 0s;
+}
+.waiting-display {
+  padding-bottom: 20px;
+}
+
 .game {
   position: absolute;
   height: 100vh;

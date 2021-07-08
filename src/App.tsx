@@ -12,10 +12,26 @@ const socket: Socket = socketClient(ENDPOINT, {
 
 function App() {
   const [gameData, setGameData] = React.useState<GameDataType>({});
+  const [loggedIn, setLoggedIn] = React.useState(false);
   return (
     <>
-      <Game socket={socket} gameData={gameData} />
-      <Login socket={socket} setGameData={setGameData} gameData={gameData} />
+      <Game
+        socket={socket}
+        gameData={gameData}
+        resetGameData={() => {
+          setLoggedIn(false);
+          setGameData({});
+        }}
+      />
+      <Login
+        socket={socket}
+        loggedIn={loggedIn}
+        setLoggedIn={setLoggedIn}
+        setGameData={setGameData}
+        isOverlayVisible={
+          !(gameData.room && gameData.users && gameData.users.length > 1)
+        }
+      />
     </>
   );
 }

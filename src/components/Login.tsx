@@ -1,6 +1,5 @@
 import React from 'react';
 import { Socket } from 'socket.io-client';
-import { GameDataType } from '../types';
 import LoginForm from './LoginForm';
 import Waiting from './Waiting';
 import { getUser } from '../utils';
@@ -8,13 +7,16 @@ import { getUser } from '../utils';
 export default function Login({
   socket,
   setGameData,
-  gameData,
+  isOverlayVisible,
+  loggedIn,
+  setLoggedIn,
 }: {
   socket: Socket;
   setGameData: Function;
-  gameData: GameDataType;
+  isOverlayVisible: boolean;
+  loggedIn: boolean;
+  setLoggedIn: Function;
 }) {
-  const [loggedIn, setLoggedIn] = React.useState(false);
   const [user, setUser] = React.useState(getUser());
   const [opponentUser, setOpponentUser] = React.useState<string>();
   const [room, setRoom] = React.useState<string>(
@@ -41,9 +43,7 @@ export default function Login({
   }, [user, socket, setGameData]);
 
   return (
-    <Overlay
-      visible={!(gameData.room && gameData.users && gameData.users.length > 1)}
-    >
+    <Overlay visible={isOverlayVisible}>
       {loggedIn ? (
         <Waiting room={room} opponentUser={opponentUser} />
       ) : (

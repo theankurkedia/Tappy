@@ -66,7 +66,7 @@ export default function LoginForm({
         </label>
       </div>
       <button onClick={handleClick} className='login-button button-ripple'>
-        Login
+        Join
       </button>
     </div>
   );

@@ -10,9 +10,11 @@ const COLORS = {
 function Game({
   socket,
   gameData,
+  resetGameData,
 }: {
   socket: Socket;
   gameData: GameDataType;
+  resetGameData: Function;
 }) {
   const [score, setScore] = React.useState(50);
   const [result, setResult] = React.useState<string | null>();
@@ -23,6 +25,7 @@ function Game({
 
   const reset = () => {
     setScore(50);
+    resetGameData();
     setResult(null);
   };
 

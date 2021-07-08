@@ -1,8 +1,8 @@
 import React from 'react';
 import { Socket } from 'socket.io-client';
+import { getUser } from '../utils';
 import LoginForm from './LoginForm';
 import Waiting from './Waiting';
-import { getUser } from '../utils';
 
 export default function Login({
   socket,

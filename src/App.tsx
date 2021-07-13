@@ -13,16 +13,13 @@ const socket: Socket = socketClient(ENDPOINT, {
 function App() {
   const [gameData, setGameData] = React.useState<GameDataType>({});
   const [loggedIn, setLoggedIn] = React.useState(false);
+  const resetGameData = React.useCallback(() => {
+    setLoggedIn(false);
+    setGameData({});
+  }, []);
   return (
     <>
-      <Game
-        socket={socket}
-        gameData={gameData}
-        resetGameData={() => {
-          setLoggedIn(false);
-          setGameData({});
-        }}
-      />
+      <Game socket={socket} gameData={gameData} resetGameData={resetGameData} />
       <Login
         socket={socket}
         loggedIn={loggedIn}

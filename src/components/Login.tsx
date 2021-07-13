@@ -3,6 +3,7 @@ import { Socket } from 'socket.io-client';
 import { getUser } from '../utils';
 import LoginForm from './LoginForm';
 import Waiting from './Waiting';
+import { Overlay } from './utils';
 
 export default function Login({
   socket,
@@ -57,18 +58,5 @@ export default function Login({
         />
       )}
     </Overlay>
-  );
-}
-
-function Overlay({ children, visible }: { children: any; visible: boolean }) {
-  return (
-    <div
-      className='overlay'
-      style={{
-        visibility: !visible ? 'hidden' : undefined,
-      }}
-    >
-      {children}
-    </div>
   );
 }

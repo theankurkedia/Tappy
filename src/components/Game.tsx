@@ -23,11 +23,11 @@ function Game({
     setScore((prevScore) => prevScore - 2);
   }, []);
 
-  const reset = () => {
+  const reset = React.useCallback(() => {
     setScore(50);
     resetGameData();
     setResult(null);
-  };
+  }, [resetGameData]);
 
   function tickLocal() {
     if (score < 98) {
@@ -63,7 +63,7 @@ function Game({
           break;
       }
     });
-  }, [socket, tickOpponent]);
+  }, [socket, tickOpponent, reset]);
   return (
     <div className='game'>
       {result ? (

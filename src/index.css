@@ -189,3 +189,27 @@ code {
   border-radius: 6px;
   pointer-events: none;
 }
+
+.header {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-self: flex-end;
+  align-self: flex-end;
+}
+.header > a {
+  color: white;
+  padding-left: 12px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 16px;
+  color: white;
+}
+.footer > a {
+  color: white;
+}

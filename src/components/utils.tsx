@@ -1,9 +1,9 @@
 function Header() {
   return (
     <div className='header'>
-      <a href={'https://www.ankurkedia.com/'} target='_blank' rel='noreferrer'>
+      {/* <a href={'https://www.ankurkedia.com/'} target='_blank' rel='noreferrer'>
         How to play
-      </a>
+      </a> */}
       <a
         href={'https://github.com/theankurkedia/tapp'}
         target='_blank'
@@ -11,9 +11,9 @@ function Header() {
       >
         source
       </a>
-      <a href={'https://www.ankurkedia.com/'} target='_blank' rel='noreferrer'>
+      {/* <a href={'https://www.ankurkedia.com/'} target='_blank' rel='noreferrer'>
         about
-      </a>
+      </a> */}
     </div>
   );
 }

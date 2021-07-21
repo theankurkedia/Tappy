@@ -39,7 +39,7 @@ export default function LoginForm({
   };
 
   return (
-    <div className='login_wrapper'>
+    <div className='login_wrapper glassmorphed'>
       <div className='input_field_wrapper'>
         <label className='input'>
           <input

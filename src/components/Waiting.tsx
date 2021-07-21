@@ -22,7 +22,7 @@ export default function Waiting({
   }, [opponentUser]);
 
   return (
-    <div className='login_wrapper'>
+    <div className='login_wrapper glassmorphed'>
       {opponentUser ? (
         <>
           <div className='waiting-display'>{opponentUser} joined.</div>

@@ -221,6 +221,10 @@ code {
   position: relative;
   display: inline-block;
   padding-left: 12px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .tooltip .tooltiptext {

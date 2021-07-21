@@ -11,8 +11,8 @@ function Header() {
       <div className='tooltip'>
         How to play?
         <span className='tooltiptext glassmorphed'>
-          Just enter your name. Share the room id with the other player and
-          start tapping.
+          Just enter your name. Join the room. Share the room id with the other
+          player and start tapping.
         </span>
       </div>
       <a

@@ -16,7 +16,7 @@ export default function Login({
   setGameData: (val: any) => void;
   isOverlayVisible: boolean;
   loggedIn: boolean;
-  setLoggedIn: () => void;
+  setLoggedIn: (val: any) => void;
 }) {
   const [user, setUser] = React.useState(getUser());
   const [opponentUser, setOpponentUser] = React.useState<string>();

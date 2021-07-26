@@ -11,11 +11,11 @@ export default function LoginForm({
   setUser,
 }: {
   socket: Socket;
-  setLoggedIn: Function;
   room: string;
-  setRoom: Function;
   user?: string;
-  setUser: Function;
+  setRoom: (val: any) => void;
+  setLoggedIn: (val: boolean) => void;
+  setUser: (val: any) => void;
 }) {
   const inputRef = React.useRef<any>();
 

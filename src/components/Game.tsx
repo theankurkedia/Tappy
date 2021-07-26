@@ -14,7 +14,7 @@ function Game({
 }: {
   socket: Socket;
   gameData: GameDataType;
-  resetGameData: Function;
+  resetGameData: () => void;
 }) {
   const [score, setScore] = React.useState(50);
   const [result, setResult] = React.useState<string | null>();

@@ -13,10 +13,10 @@ export default function Login({
   setLoggedIn,
 }: {
   socket: Socket;
-  setGameData: Function;
+  setGameData: (val: any) => void;
   isOverlayVisible: boolean;
   loggedIn: boolean;
-  setLoggedIn: Function;
+  setLoggedIn: () => void;
 }) {
   const [user, setUser] = React.useState(getUser());
   const [opponentUser, setOpponentUser] = React.useState<string>();
@@ -26,7 +26,7 @@ export default function Login({
 
   React.useEffect(() => {
     socket.on('startGame', (data: { users: Array<any>; room: string }) => {
-      let otherUser: { name: string; room: string } = data.users.filter(
+      const otherUser: { name: string; room: string } = data.users.filter(
         (usr) => usr.name !== user
       )[0];
       setOpponentUser(otherUser?.name || 'Opponent');

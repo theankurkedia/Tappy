@@ -18,7 +18,7 @@ clientsClaim();
 declare global {
   interface Window {
     __WB_MANIFEST?: any;
-    skipWaiting?: Function;
+    skipWaiting?: () => void;
   }
 }
 

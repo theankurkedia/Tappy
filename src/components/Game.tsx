@@ -1,11 +1,9 @@
 import React from 'react';
 import { SocketContext } from '../context';
 import { GameDataType } from '../types';
-
-const COLORS = {
-  opponent: '#e11d48',
-  local: '#2563eb',
-};
+import { COLORS } from '../constants';
+import Result from './Result';
+import ColorBlock from './ColorBlock';
 
 function Game({
   gameData,
@@ -16,7 +14,7 @@ function Game({
 }) {
   const socket = React.useContext(SocketContext);
   const [score, setScore] = React.useState(50);
-  const [result, setResult] = React.useState<string | null>();
+  const [winner, setWinner] = React.useState<'opponent' | 'local' | null>();
 
   const tickOpponent = React.useCallback(() => {
     setScore((prevScore) => prevScore - 2);
@@ -25,10 +23,10 @@ function Game({
   const reset = React.useCallback(() => {
     setScore(50);
     resetGameData();
-    setResult(null);
+    setWinner(null);
   }, [resetGameData]);
 
-  function tickLocal() {
+  const tickLocal = () => {
     if (score < 98) {
       socket?.emit('updateScore', {}, (error: any) => {
         if (error) {
@@ -42,9 +40,9 @@ function Game({
           console.log(error);
         }
       });
-      setResult('local');
+      setWinner('local');
     }
-  }
+  };
 
   React.useEffect(() => {
     socket?.on('message', ({ type }: { type: string }) => {
@@ -53,7 +51,7 @@ function Game({
           tickOpponent();
           break;
         case 'announceWinner':
-          setResult('opponent');
+          setWinner('opponent');
           break;
         case 'resetGame':
           reset();
@@ -63,80 +61,30 @@ function Game({
       }
     });
   }, [socket, tickOpponent, reset]);
+
   return (
     <div className='game'>
-      {result ? (
-        <div
-          className='result-wrapper'
-          style={{
-            backgroundColor:
-              COLORS[result === 'opponent' ? 'opponent' : 'local'],
-          }}
-        >
-          <h6 className='result-text'>{`You ${
-            result === 'local' ? 'won' : 'lost'
-          }!`}</h6>
-          <button
-            onClick={() => {
-              socket?.emit('reset', {}, (error: any) => {
-                if (error) {
-                  console.log(error);
-                }
-              });
-              reset();
-            }}
-            className='play-again button-ripple'
-            style={{
-              backgroundColor:
-                COLORS[result === 'opponent' ? 'local' : 'opponent'],
-            }}
-          >
-            Play again?
-          </button>
-        </div>
+      {winner ? (
+        <Result reset={reset} winner={winner} />
       ) : (
         <>
-          <div
-            className='color-block'
-            style={{
-              backgroundColor: COLORS.opponent,
-              height: 100 - score + '%',
-            }}
-          >
-            {gameData.opponentUser ? (
-              <div
-                style={{
-                  top: 10,
-                }}
-                className='name-tag'
-              >
-                {gameData.opponentUser}
-              </div>
-            ) : null}
-          </div>
-          <div
-            className='color-block'
-            style={{
-              backgroundColor: COLORS.local,
-              height: score + '%',
-            }}
+          <ColorBlock
+            height={100 - score}
+            color={COLORS.opponent}
+            username={gameData.opponentUser}
+            alignment='top'
+          />
+          <ColorBlock
+            height={score}
+            color={COLORS.local}
+            username={gameData.localUser}
+            alignment='bottom'
             onClick={tickLocal}
-          >
-            {gameData.localUser ? (
-              <div
-                style={{
-                  bottom: 10,
-                }}
-                className='name-tag'
-              >
-                {gameData.localUser}
-              </div>
-            ) : null}
-          </div>
+          />
         </>
       )}
     </div>
   );
 }
 
-export default Game;
+export default React.memo(Game);

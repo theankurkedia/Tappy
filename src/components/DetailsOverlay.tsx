@@ -1,20 +1,26 @@
 import React from 'react';
 import { SocketContext } from '../context';
+import { GameDataType } from '../types';
 import { getUser } from '../utils';
+import Footer from './Footer';
+import Header from './Header';
 import LoginForm from './LoginForm';
-import { Overlay } from './utils';
 import Waiting from './Waiting';
 
-export default function DetailsOverlay({
+/**
+ *
+ * @returns Component showing either the waiting timer or the login form
+ */
+function DetailsOverlay({
   setGameData,
   isOverlayVisible,
   loggedIn,
   setLoggedIn,
 }: {
-  setGameData: (val: any) => void;
+  setGameData: (val: GameDataType) => void;
   isOverlayVisible: boolean;
   loggedIn: boolean;
-  setLoggedIn: (val: any) => void;
+  setLoggedIn: (val: boolean) => void;
 }) {
   const socket = React.useContext(SocketContext);
   const [localUser, setLocalUser] = React.useState(getUser());
@@ -48,7 +54,13 @@ export default function DetailsOverlay({
   }, [socket, gameListener]);
 
   return (
-    <Overlay visible={isOverlayVisible}>
+    <div
+      className='overlay'
+      style={{
+        visibility: !isOverlayVisible ? 'hidden' : undefined,
+      }}
+    >
+      <Header />
       {loggedIn ? (
         <Waiting room={room} opponentUser={opponentUser} />
       ) : (
@@ -60,6 +72,9 @@ export default function DetailsOverlay({
           setRoom={setRoom}
         />
       )}
-    </Overlay>
+      <Footer />
+    </div>
   );
 }
+
+export default React.memo(DetailsOverlay);

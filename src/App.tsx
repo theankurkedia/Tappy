@@ -1,7 +1,7 @@
 import React from 'react';
-import Game from './components/Game';
-import Login from './components/Login';
 import socketClient, { Socket } from 'socket.io-client';
+import { DetailsOverlay, Game } from './components';
+import { SocketContext } from './context';
 import { GameDataType } from './types';
 
 const ENDPOINT = process.env.REACT_APP_ENDPOINT || '';
@@ -17,11 +17,22 @@ function App() {
     setLoggedIn(false);
     setGameData({});
   }, []);
+
+  const errorListener = (err: Error) => {
+    console.error(`Connection error due to ${err.message}`);
+  };
+
+  React.useEffect(() => {
+    socket.on('connect_error', errorListener);
+    return () => {
+      socket.off('connect_error', errorListener);
+    };
+  }, []);
+
   return (
-    <>
-      <Game socket={socket} gameData={gameData} resetGameData={resetGameData} />
-      <Login
-        socket={socket}
+    <SocketContext.Provider value={socket}>
+      <Game gameData={gameData} resetGameData={resetGameData} />
+      <DetailsOverlay
         loggedIn={loggedIn}
         setLoggedIn={setLoggedIn}
         setGameData={setGameData}
@@ -29,7 +40,7 @@ function App() {
           !(gameData.room && gameData.users && gameData.users.length > 1)
         }
       />
-    </>
+    </SocketContext.Provider>
   );
 }
 

@@ -1,8 +1,10 @@
 import React from 'react';
 import { SocketContext } from '../context';
+import { GameDataType } from '../types';
 import { getUser } from '../utils';
+import Footer from './Footer';
+import Header from './Header';
 import LoginForm from './LoginForm';
-import Overlay from './Overlay';
 import Waiting from './Waiting';
 
 /**
@@ -15,10 +17,10 @@ function DetailsOverlay({
   loggedIn,
   setLoggedIn,
 }: {
-  setGameData: (val: any) => void;
+  setGameData: (val: GameDataType) => void;
   isOverlayVisible: boolean;
   loggedIn: boolean;
-  setLoggedIn: (val: any) => void;
+  setLoggedIn: (val: boolean) => void;
 }) {
   const socket = React.useContext(SocketContext);
   const [localUser, setLocalUser] = React.useState(getUser());
@@ -52,7 +54,13 @@ function DetailsOverlay({
   }, [socket, gameListener]);
 
   return (
-    <Overlay visible={isOverlayVisible}>
+    <div
+      className='overlay'
+      style={{
+        visibility: !isOverlayVisible ? 'hidden' : undefined,
+      }}
+    >
+      <Header />
       {loggedIn ? (
         <Waiting room={room} opponentUser={opponentUser} />
       ) : (
@@ -64,7 +72,8 @@ function DetailsOverlay({
           setRoom={setRoom}
         />
       )}
-    </Overlay>
+      <Footer />
+    </div>
   );
 }
 

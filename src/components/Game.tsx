@@ -61,6 +61,7 @@ function Game({
       }
     });
   }, [socket, tickOpponent, reset]);
+
   return (
     <div className='game'>
       {winner ? (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Socket } from 'socket.io-client';
+import { SocketContext } from '../context';
 import { GameDataType } from '../types';
 
 const COLORS = {
@@ -8,14 +8,13 @@ const COLORS = {
 };
 
 function Game({
-  socket,
   gameData,
   resetGameData,
 }: {
-  socket: Socket;
   gameData: GameDataType;
   resetGameData: () => void;
 }) {
+  const socket = React.useContext(SocketContext);
   const [score, setScore] = React.useState(50);
   const [result, setResult] = React.useState<string | null>();
 
@@ -31,14 +30,14 @@ function Game({
 
   function tickLocal() {
     if (score < 98) {
-      socket.emit('updateScore', {}, (error: any) => {
+      socket?.emit('updateScore', {}, (error: any) => {
         if (error) {
           console.log(error);
         }
       });
       setScore((prevScore) => prevScore + 2);
     } else {
-      socket.emit('gameOver', {}, (error: any) => {
+      socket?.emit('gameOver', {}, (error: any) => {
         if (error) {
           console.log(error);
         }
@@ -48,7 +47,7 @@ function Game({
   }
 
   React.useEffect(() => {
-    socket.on('message', ({ type }: { type: string }) => {
+    socket?.on('message', ({ type }: { type: string }) => {
       switch (type) {
         case 'scoreUpdated':
           tickOpponent();
@@ -79,7 +78,7 @@ function Game({
           }!`}</h6>
           <button
             onClick={() => {
-              socket.emit('reset', {}, (error: any) => {
+              socket?.emit('reset', {}, (error: any) => {
                 if (error) {
                   console.log(error);
                 }

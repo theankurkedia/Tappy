@@ -112,7 +112,7 @@ code {
 }
 
 .login-button:disabled {
-  opacity: 0.8;
+  opacity: 0.7;
   cursor: not-allowed;
 }
 

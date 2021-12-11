@@ -1,47 +1,51 @@
 import React from 'react';
-import { Socket } from 'socket.io-client';
+import { SocketContext } from '../context';
 import { getUser } from '../utils';
 import LoginForm from './LoginForm';
-import Waiting from './Waiting';
 import { Overlay } from './utils';
+import Waiting from './Waiting';
 
-export default function Login({
-  socket,
+export default function DetailsOverlay({
   setGameData,
   isOverlayVisible,
   loggedIn,
   setLoggedIn,
 }: {
-  socket: Socket;
   setGameData: (val: any) => void;
   isOverlayVisible: boolean;
   loggedIn: boolean;
   setLoggedIn: (val: any) => void;
 }) {
-  const [user, setUser] = React.useState(getUser());
+  const socket = React.useContext(SocketContext);
+  const [localUser, setLocalUser] = React.useState(getUser());
   const [opponentUser, setOpponentUser] = React.useState<string>();
   const [room, setRoom] = React.useState<string>(
     Math.floor(Math.random() * 10000).toString()
   );
 
-  React.useEffect(() => {
-    socket.on('startGame', (data: { users: Array<any>; room: string }) => {
+  const gameListener = React.useCallback(
+    (data: { users: Array<any>; room: string }) => {
       const otherUser: { name: string; room: string } = data.users.filter(
-        (usr) => usr.name !== user
+        (usr) => usr.name !== localUser
       )[0];
       setOpponentUser(otherUser?.name || 'Opponent');
       setTimeout(() => {
         setGameData({
           ...data,
-          localUser: user,
+          localUser: localUser,
           opponentUser: otherUser?.name || 'Opponent',
         });
       }, 5000);
-    });
+    },
+    [localUser, setGameData]
+  );
+
+  React.useEffect(() => {
+    socket?.on('startGame', gameListener);
     return () => {
-      socket.off('startGame');
+      socket?.off('startGame', gameListener);
     };
-  }, [user, socket, setGameData]);
+  }, [socket, gameListener]);
 
   return (
     <Overlay visible={isOverlayVisible}>
@@ -49,10 +53,9 @@ export default function Login({
         <Waiting room={room} opponentUser={opponentUser} />
       ) : (
         <LoginForm
-          socket={socket}
           setLoggedIn={setLoggedIn}
-          user={user}
-          setUser={setUser}
+          user={localUser}
+          setUser={setLocalUser}
           room={room}
           setRoom={setRoom}
         />

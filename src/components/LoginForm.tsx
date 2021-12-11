@@ -1,23 +1,23 @@
 import React from 'react';
-import { Socket } from 'socket.io-client';
+import { SocketContext } from '../context';
 import { saveUser } from '../utils';
+import InputField from './InputField';
 
 export default function LoginForm({
-  socket,
   setLoggedIn,
   room,
   setRoom,
   user,
   setUser,
 }: {
-  socket: Socket;
   room: string;
   user?: string;
-  setRoom: (val: any) => void;
+  setRoom: (val: string) => void;
   setLoggedIn: (val: boolean) => void;
-  setUser: (val: any) => void;
+  setUser: (val: string) => void;
 }) {
   const inputRef = React.useRef<any>();
+  const socket = React.useContext(SocketContext);
 
   React.useEffect(() => {
     if (inputRef && inputRef.current) {
@@ -25,9 +25,9 @@ export default function LoginForm({
     }
   }, []);
 
-  const handleClick = () => {
+  const loginUser = () => {
     if (user && room) {
-      socket.emit('login', { name: user, room }, ({ error, success }: any) => {
+      socket?.emit('login', { name: user, room }, ({ error, success }: any) => {
         if (error) {
           console.log(error);
         } else if (success) {
@@ -38,34 +38,21 @@ export default function LoginForm({
     }
   };
 
+  const isButtonDisabled = !user || !room;
   return (
     <div className='login_wrapper glassmorphed'>
-      <div className='input_field_wrapper'>
-        <label className='input'>
-          <input
-            className='input_field'
-            type='text'
-            placeholder=' '
-            value={user}
-            onChange={(e: any) => setUser(e.target.value)}
-            ref={inputRef}
-          />
-          <span className='input_label'>Name</span>
-        </label>
-      </div>
-      <div className='input_field_wrapper'>
-        <label className='input'>
-          <input
-            className='input_field'
-            type='text'
-            placeholder=' '
-            value={room}
-            onChange={(e: any) => setRoom(e.target.value)}
-          />
-          <span className='input_label'>Room</span>
-        </label>
-      </div>
-      <button onClick={handleClick} className='login-button button-ripple'>
+      <InputField
+        label='Name'
+        value={user}
+        setValue={setUser}
+        inputRef={inputRef}
+      />
+      <InputField label='Room' value={room} setValue={setRoom} />
+      <button
+        onClick={loginUser}
+        className={`login-button button-ripple`}
+        disabled={isButtonDisabled}
+      >
         Join
       </button>
     </div>

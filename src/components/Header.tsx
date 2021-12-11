@@ -1,5 +1,9 @@
 import React from 'react';
 
+/**
+ *
+ * @returns A header component with basic info and tooltips to show relevant info
+ */
 function Header() {
   return (
     <div className='header'>
@@ -28,4 +32,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default React.memo(Header);

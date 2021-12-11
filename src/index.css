@@ -47,27 +47,16 @@ code {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
-.input {
-  position: relative;
-}
-.input_label {
-  position: absolute;
-  left: 0;
-  top: 0;
-  padding: 6px 0px;
-  margin: 9px 0px;
-  white-space: nowrap;
-  transform: translate(0, 0);
-  transform-origin: 0 0;
-  transition: transform 120ms ease-in;
-  font-weight: bold;
-  line-height: 1.2;
-  color: #e5e3e3;
-}
+
 .input_field_wrapper {
   margin: 16px;
 }
-.input_field {
+
+.input_field_wrapper .input {
+  position: relative;
+}
+
+.input_field_wrapper .input_field {
   box-sizing: border-box;
   display: block;
   border: 0px solid;
@@ -92,10 +81,19 @@ code {
   transform: translate(0.25rem, -65%) scale(0.8);
 }
 
-.action-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+.input_field_wrapper .input_label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 6px 0px;
+  margin: 9px 0px;
+  white-space: nowrap;
+  transform: translate(0, 0);
+  transform-origin: 0 0;
+  transition: transform 120ms ease-in;
+  font-weight: bold;
+  line-height: 1.2;
+  color: #e5e3e3;
 }
 
 .login-button {
@@ -124,15 +122,18 @@ code {
   background-position: center;
   transition: background 0.8s;
 }
+
 .button-ripple:hover {
   background: #2563ebad radial-gradient(circle, transparent 1%, #2563ebad 1%)
     center/15000%;
 }
+
 .button-ripple:active {
   background-color: #7497b4;
   background-size: 100%;
   transition: filter 0s;
 }
+
 .waiting-display {
   padding-bottom: 20px;
 }

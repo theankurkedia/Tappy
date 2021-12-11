@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-export default function Waiting({
+function Waiting({
   room,
   opponentUser,
 }: {
   room: string;
   opponentUser?: string;
 }) {
-  const [timer, setTimer] = useState<number>(5);
+  const [timer, setTimer] = React.useState<number>(5);
 
-  useEffect(() => {
-    let interval: any;
+  React.useEffect(() => {
+    let interval: ReturnType<typeof setInterval>;
     if (opponentUser) {
       interval = setInterval(() => {
         setTimer((prevState) => prevState - 1);
@@ -37,3 +37,5 @@ export default function Waiting({
     </div>
   );
 }
+
+export default React.memo(Waiting);

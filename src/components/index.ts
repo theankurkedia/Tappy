@@ -1,0 +1,10 @@
+export { default as ColorBlock } from './ColorBlock';
+export { default as DetailsOverlay } from './DetailsOverlay';
+export { default as Footer } from './Footer';
+export { default as Game } from './Game';
+export { default as Header } from './Header';
+export { default as InputField } from './InputField';
+export { default as LoginForm } from './LoginForm';
+export { default as Overlay } from './Overlay';
+export { default as Result } from './Result';
+export { default as Waiting } from './Waiting';

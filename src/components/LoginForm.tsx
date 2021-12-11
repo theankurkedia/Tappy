@@ -3,7 +3,7 @@ import { SocketContext } from '../context';
 import { saveUser } from '../utils';
 import InputField from './InputField';
 
-export default function LoginForm({
+function LoginForm({
   setLoggedIn,
   room,
   setRoom,
@@ -16,8 +16,9 @@ export default function LoginForm({
   setLoggedIn: (val: boolean) => void;
   setUser: (val: string) => void;
 }) {
-  const inputRef = React.useRef<any>();
+  const inputRef = React.useRef<HTMLInputElement | null>(null);
   const socket = React.useContext(SocketContext);
+  const [joiningInProgress, setJoiningInProgress] = React.useState(false);
 
   React.useEffect(() => {
     if (inputRef && inputRef.current) {
@@ -27,14 +28,20 @@ export default function LoginForm({
 
   const loginUser = () => {
     if (user && room) {
-      socket?.emit('login', { name: user, room }, ({ error, success }: any) => {
-        if (error) {
-          console.log(error);
-        } else if (success) {
-          setLoggedIn(true);
-          saveUser(user);
+      setJoiningInProgress(true);
+      socket?.emit(
+        'login',
+        { name: user, room },
+        ({ error, success }: { error: string; success: any }) => {
+          setJoiningInProgress(false);
+          if (error) {
+            console.log(error);
+          } else if (success) {
+            setLoggedIn(true);
+            saveUser(user);
+          }
         }
-      });
+      );
     }
   };
 
@@ -51,10 +58,12 @@ export default function LoginForm({
       <button
         onClick={loginUser}
         className={`login-button button-ripple`}
-        disabled={isButtonDisabled}
+        disabled={isButtonDisabled || joiningInProgress}
       >
         Join
       </button>
     </div>
   );
 }
+
+export default React.memo(LoginForm);

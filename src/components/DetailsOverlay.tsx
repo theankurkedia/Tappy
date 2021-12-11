@@ -2,10 +2,14 @@ import React from 'react';
 import { SocketContext } from '../context';
 import { getUser } from '../utils';
 import LoginForm from './LoginForm';
-import { Overlay } from './utils';
+import Overlay from './Overlay';
 import Waiting from './Waiting';
 
-export default function DetailsOverlay({
+/**
+ *
+ * @returns Component showing either the waiting timer or the login form
+ */
+function DetailsOverlay({
   setGameData,
   isOverlayVisible,
   loggedIn,
@@ -63,3 +67,5 @@ export default function DetailsOverlay({
     </Overlay>
   );
 }
+
+export default React.memo(DetailsOverlay);

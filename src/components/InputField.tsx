@@ -1,6 +1,10 @@
 import React from 'react';
 
-const InputField = ({
+/**
+ *
+ * @returns a input element with label animation
+ */
+function InputField({
   label,
   value,
   setValue,
@@ -9,8 +13,8 @@ const InputField = ({
   label: string;
   value: string | undefined;
   setValue: (val: string) => void;
-  inputRef?: any;
-}) => {
+  inputRef?: React.MutableRefObject<HTMLInputElement | null>;
+}) {
   return (
     <div className='input_field_wrapper'>
       <label className='input'>
@@ -20,12 +24,12 @@ const InputField = ({
           placeholder=' '
           value={value}
           onChange={(e: any) => setValue(e.target.value)}
-          ref={inputRef}
+          ref={inputRef ?? undefined}
         />
         <span className='input_label'>{label}</span>
       </label>
     </div>
   );
-};
+}
 
-export default InputField;
+export default React.memo(InputField);

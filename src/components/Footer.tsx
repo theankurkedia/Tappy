@@ -5,7 +5,7 @@ function Footer() {
     <div className='footer'>
       Made by{' '}
       <a href={'https://www.ankurkedia.com/'} target='_blank' rel='noreferrer'>
-        ankur
+        Ankur
       </a>
     </div>
   );

@@ -26,11 +26,11 @@ function Waiting({
       {opponentUser ? (
         <>
           <div className='waiting-display'>{opponentUser} joined.</div>
-          <div>Game begins in {timer}...</div>
+          <div>{`Game begins in ${timer}...`}</div>
         </>
       ) : (
         <>
-          <div className='waiting-display'>Your room id is: {room}</div>
+          <div className='waiting-display'>{`Your room id is: ${room}`}</div>
           <div>Waiting for the other user to join.</div>
         </>
       )}

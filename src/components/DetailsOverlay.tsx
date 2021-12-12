@@ -1,6 +1,6 @@
 import React from 'react';
 import { SocketContext } from '../context';
-import { GameDataType } from '../types';
+import { GameDataType, UserType } from '../types';
 import { getUser } from '../utils';
 import Footer from './Footer';
 import Header from './Header';
@@ -30,7 +30,7 @@ function DetailsOverlay({
   );
 
   const gameListener = React.useCallback(
-    (data: { users: Array<any>; room: string }) => {
+    (data: { users: Array<UserType>; room: string }) => {
       const otherUser: { name: string; room: string } = data.users.filter(
         (usr) => usr.name !== localUser
       )[0];
@@ -38,7 +38,7 @@ function DetailsOverlay({
       setTimeout(() => {
         setGameData({
           ...data,
-          localUser: localUser,
+          localUser,
           opponentUser: otherUser?.name || 'Opponent',
         });
       }, 5000);

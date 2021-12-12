@@ -22,7 +22,7 @@ function Result({
       }!`}</h6>
       <button
         onClick={() => {
-          socket?.emit('reset', {}, (error: any) => {
+          socket?.emit('reset', {}, (error: Error) => {
             if (error) {
               console.log(error);
             }

@@ -28,14 +28,14 @@ function Game({
 
   const tickLocal = () => {
     if (score < 98) {
-      socket?.emit('updateScore', {}, (error: any) => {
+      socket?.emit('updateScore', {}, (error: Error) => {
         if (error) {
           console.log(error);
         }
       });
       setScore((prevScore) => prevScore + 2);
     } else {
-      socket?.emit('gameOver', {}, (error: any) => {
+      socket?.emit('gameOver', {}, (error: Error) => {
         if (error) {
           console.log(error);
         }

@@ -32,7 +32,7 @@ function LoginForm({
       socket?.emit(
         'login',
         { name: user, room },
-        ({ error, success }: { error: string; success: any }) => {
+        ({ error, success }: { error: Error; success: string }) => {
           setJoiningInProgress(false);
           if (error) {
             console.log(error);

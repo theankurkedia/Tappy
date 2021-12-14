@@ -23,7 +23,9 @@ function InputField({
           type='text'
           placeholder=' '
           value={value}
-          onChange={(e: any) => setValue(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setValue(e.target.value)
+          }
           ref={inputRef ?? undefined}
         />
         <span className='input_label'>{label}</span>
